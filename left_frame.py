@@ -95,7 +95,7 @@ class LeftFrame:
         self.left_frame = ttk.Frame(root)
         self.left_frame.place(x=50, y=80, width=140, height=600)
 
-        self.logo_image = PhotoImage(file='admin.png')
+        self.logo_image = PhotoImage(file=r'media\admin.png')
         self.logo_label = ttk.Label(self.left_frame, image=self.logo_image)
         self.logo_label.grid(row=0, column=0, columnspan=2)
 

@@ -33,10 +33,9 @@ class Login:
         window.title('Login System')
         window.geometry('1400x700+50+50')
         window.resizable(False, False)
-        bg_image = ImageTk.PhotoImage(file='bg.jpg')
 
          # Load the background image
-        bg_image = ImageTk.PhotoImage(file='bg.jpg')
+        bg_image = ImageTk.PhotoImage(file=r'media\bg.jpg')
 
         # Create a label to display the background image
         bg_label = Label(window, image=bg_image)
@@ -47,12 +46,12 @@ class Login:
         login_frame.place(x=450, y=300)
 
         # Load and display the logo image
-        logo_img = ImageTk.PhotoImage(file='logo.jpg')
+        logo_img = ImageTk.PhotoImage(file=r'media\logo.jpg')
         logo_label = Label(login_frame, image=logo_img)
         logo_label.grid(column=0, row=0, columnspan=2, pady=10)
 
         # Create the username label and entry field
-        username_logo = PhotoImage(file='username.png')
+        username_logo = PhotoImage(file=r'media\username.png')
         username_label = Label(login_frame, image=username_logo, bg='#f5f5f7', text='Username',
                                font=('times new roman', 18, 'bold'), compound=LEFT)
         username_label.grid(column=0, row=1, padx=10, pady=10)
@@ -63,7 +62,7 @@ class Login:
         username_entry.grid(row=1, column=1, padx=20, pady=10)
 
         # Create the password label and entry field
-        password_logo = PhotoImage(file='password.png')
+        password_logo = PhotoImage(file=r'media\password.png')
         password_label = Label(login_frame, image=password_logo, bg='#f5f5f7', text='Password',
                                font=('times new roman', 18, 'bold'), compound=LEFT)
         password_label.grid(column=0, row=2, padx=20, pady=10)
@@ -78,8 +77,8 @@ class Login:
         login_button.grid(row=3, column=1, pady=10)
 
         # Load the show/hide password icons
-        show_password = PhotoImage(file='show_password.png')
-        hide_password = PhotoImage(file='hide_password.png')
+        show_password = PhotoImage(file=r'media\show_password.png')
+        hide_password = PhotoImage(file=r'media\hide_password.png')
 
         # Create the toggle password visibility button
         toggle_password_button = Button(login_frame, image=show_password, command=toggle_password)

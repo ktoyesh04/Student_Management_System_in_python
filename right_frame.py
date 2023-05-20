@@ -47,7 +47,7 @@ class RightFrame:
             cursor = connection.cursor()
         except Exception as e:
             messagebox.showerror(title='Error', message='Cannot Connect to data base')
-            return False
+            exit()
         else:
             self.my_cursor = cursor
             self.my_connection = connection
