@@ -6,7 +6,7 @@ import pandas
 
 entry_objects = []
 
-
+# Function to display a popup window to get details from the user
 def get_details(title, button_text, command, rf):
 
     if button_text == 'Update':
@@ -15,6 +15,7 @@ def get_details(title, button_text, command, rf):
             messagebox.showwarning(title='Error', message='Select a record!')
             return
 
+    # Create a popup window to take entries
     global entry_objects
     window = Toplevel()
     window.geometry('+50+80')
@@ -22,6 +23,7 @@ def get_details(title, button_text, command, rf):
     window.grab_set()
     window.title(title)
 
+     # Create labels and entry fields for various details
     id_label = ttk.Label(window, text='Id', font=('times new roman', 16, 'bold'))
     id_label.grid(row=0, column=0, padx=20, pady=10, sticky=W)
 
@@ -66,7 +68,9 @@ def get_details(title, button_text, command, rf):
 
     entry_objects = [id_entry, name_entry, gender_entry, phone_entry,
                      email_entry, dob_entry, window]
+    
     if button_text == 'Update':
+        # Insert existing data into the entry fields for updating
         content = rf.student_table.item(indexing)
 
         list_data = content['values']
@@ -83,6 +87,7 @@ def get_details(title, button_text, command, rf):
 
 
 class LeftFrame:
+    # Class representing the left frame of the main window
 
     def __init__(self, root, rt_frame):
         self.root = root
@@ -94,6 +99,7 @@ class LeftFrame:
         self.logo_label = ttk.Label(self.left_frame, image=self.logo_image)
         self.logo_label.grid(row=0, column=0, columnspan=2)
 
+        # Create buttons for various operations
         self.add_student_button = ttk.Button(self.left_frame, text='Add Student',
                                              width=14, state=NORMAL,
                                              command=lambda: get_details('Add Student', 'Add', self.add_student, None))
@@ -122,27 +128,34 @@ class LeftFrame:
         self.export_button.grid(row=6, column=0, pady=20)
 
     def add_student(self):
+        # Function to add a student based on the entered details
+
         entries = [obj.get() for obj in entry_objects[:-1]]
         if "" in entries:
             messagebox.showerror(title='Error', message='Fields are Empty!')
             entry_objects[1][0].focus_set()
+
         else:
             entries[-1] = datetime.strptime(entries[-1], '%d-%m-%Y').strftime('%Y-%m-%d')
+            
             if self.rf.add_data('student', entries):
                 title = 'Success'
                 message = 'Student Successfully Added!'
+
             else:
                 title = 'Failure'
                 message = ''
             result = messagebox.askyesno(title=f'{title}',
                                          message=f'{message}\nClear the fields')
             self.rf.get_data()
-            print(entries)
+
             if result:
                 for obj in entry_objects[:-1]:
                     obj.delete(0, END)
 
     def search_student(self):
+         # Function to search for student(s) based on the entered details
+
         entries = [obj.get() for obj in entry_objects[:-1]]
         entries[1] = entries[1].title()
         entries[2] = entries[2].title()
@@ -153,6 +166,7 @@ class LeftFrame:
         self.rf.search_data(entries=tuple(entries))
 
     def update_student(self):
+        # Function to update a student based on the entered details
 
         window = entry_objects[-1]
         entries = [entry.get() for entry in entry_objects[:-1]]
@@ -160,12 +174,12 @@ class LeftFrame:
         entries[2] = entries[2].title()
         entries[-1] = datetime.strptime(entries[-1], '%d-%m-%Y').strftime('%Y-%m-%d')
         query_entries = tuple(entries[1:]+[entries[0]])
-        print(query_entries)
         if self.rf.update_and_show(query_entries):
             messagebox.showinfo('Success', f'Id {entries[0]} is modified successfully', parent=window)
             window.destroy()
 
     def export_data(self):
+        # Function to export the student data to a CSV file
 
         url = filedialog.asksaveasfilename(defaultextension='.csv')
         indexing = self.rf.student_table.get_children()

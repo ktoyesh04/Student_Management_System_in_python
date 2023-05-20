@@ -13,9 +13,11 @@ class RightFrame:
         right_frame = ttk.Frame(root)
         right_frame.place(x=300, y=80, width=1040, height=600)
 
+         # Create the scrollbar widget
         scroll_bar_x = ttk.Scrollbar(right_frame, orient=HORIZONTAL)
         scroll_bar_y = ttk.Scrollbar(right_frame, orient=VERTICAL)
 
+         # Create the Treeview widget to display data
         self.student_table = ttk.Treeview(right_frame, columns=('Id', 'Name', 'Gender',
                                                                 'Mobile', 'Email', 'DOB', 'Added Date'),
                                           xscrollcommand=scroll_bar_x.set, yscrollcommand=scroll_bar_y.set,
@@ -28,6 +30,7 @@ class RightFrame:
         scroll_bar_x.pack(side=BOTTOM, fill=X)
         scroll_bar_y.pack(side=RIGHT, fill=Y)
 
+        # Set column headings and assign sorting commands to them
         self.student_table.heading('Id', text='Id', command=lambda: self.sort_by_column('Id'))
         self.student_table.heading('Name', text='Name', command=lambda: self.sort_by_column('Name'))
         self.student_table.heading('Gender', text='Gender', command=lambda: self.sort_by_column('Gender'))
@@ -37,19 +40,18 @@ class RightFrame:
         self.student_table.heading('Added Date', text='Added Date', command=lambda: self.sort_by_column('Added_Date'))
 
     def connect_data_base(self):
-        entries = {'host': 'localhost', 'user': 'root', 'password': 'anjaneya78'}
+        entries = {'host': 'your_host', 'user': 'your_user', 'password': 'your_password'}
         try:
             connection = pymysql.connect(host=entries['host'], user=entries['user'],
                                          password=entries['password'])
             cursor = connection.cursor()
         except Exception as e:
-            print(e)
             messagebox.showerror(title='Error', message='Cannot Connect to data base')
-            # return False
+            return False
         else:
             self.my_cursor = cursor
             self.my_connection = connection
-            cursor.execute('use sms1;')
+            cursor.execute('your_database')
             messagebox.showinfo(title='Success!',
                                 message='Database connection is successful!')
         return True
@@ -92,9 +94,7 @@ class RightFrame:
             self.column_sort_order[column] = 'DESC'
 
     def search_data(self, entries):
-        print(entries)
         query = 'SELECT * FROM STUDENT WHERE id=%s OR name=%s OR gender=%s OR mobile=%s OR email=%s OR dob=%s'
-        print(query)
         self.my_cursor.execute(query, entries)
         self.show_data()
 
@@ -113,7 +113,6 @@ class RightFrame:
         try:
             self.my_cursor.execute(query, entries)
         except Exception as e:
-            print(e)
             messagebox.showerror(title='Error', message=f'{e}')
             return False
         else:

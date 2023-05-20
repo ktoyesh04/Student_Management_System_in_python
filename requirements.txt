@@ -1,0 +1,2 @@
+Pillow==9.5.0
+ttkthemes==3.2.2
