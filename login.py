@@ -14,7 +14,7 @@ class Login:
             elif username_entry.get() == 'admin' and password_entry.get() == 'admin':
                 messagebox.showinfo('Success', 'Welcome!')
                 window.destroy()
-                import admin.admin_main
+                import admin_main
             else:
                 messagebox.showerror(title='Error', message='Invalid username or password')
 

@@ -1,10 +1,7 @@
-from datetime import datetime
 from tkinter import *
 from tkinter import ttk, messagebox
 import pymysql
-# from time import strftime
 from tkinter import messagebox
-# from admin.left_frame import LeftFrame
 
 
 class RightFrame:
@@ -37,7 +34,7 @@ class RightFrame:
         self.student_table.heading('Mobile', text='Mobile', command=lambda: self.sort_by_column('Mobile'))
         self.student_table.heading('Email', text='Email', command=lambda: self.sort_by_column('Email'))
         self.student_table.heading('DOB', text='DOB', command=lambda: self.sort_by_column('DOB'))
-        self.student_table.heading('Added Date', text='Added Date', command=lambda: self.sort_by_column('Added Date'))
+        self.student_table.heading('Added Date', text='Added Date', command=lambda: self.sort_by_column('Added_Date'))
 
     def connect_data_base(self):
         entries = {'host': 'localhost', 'user': 'root', 'password': 'anjaneya78'}
@@ -52,10 +49,10 @@ class RightFrame:
         else:
             self.my_cursor = cursor
             self.my_connection = connection
-            cursor.execute('use sms;')
-            # messagebox.showinfo(title='Success!',
-            #                     message='Database connection is successful!')
-        # return True
+            cursor.execute('use sms1;')
+            messagebox.showinfo(title='Success!',
+                                message='Database connection is successful!')
+        return True
 
     def show_data(self):
         self.student_table.delete(*self.student_table.get_children())
@@ -95,6 +92,31 @@ class RightFrame:
             self.column_sort_order[column] = 'DESC'
 
     def search_data(self, entries):
-        query = 'SELECT * FROM STUDENT WHERE id=%s OR name=%s OR gender=%s OR email=%s OR mobile=%s OR dob=%s'
+        print(entries)
+        query = 'SELECT * FROM STUDENT WHERE id=%s OR name=%s OR gender=%s OR mobile=%s OR email=%s OR dob=%s'
+        print(query)
         self.my_cursor.execute(query, entries)
         self.show_data()
+
+    def delete_student(self):
+        indexing = self.student_table.focus()
+        content = self.student_table.item(indexing)
+        content_id = content['values'][0]
+        query = 'DELETE FROM student WHERE id=%s'
+        self.my_cursor.execute(query, content_id)
+        self.my_connection.commit()
+        self.get_data()
+        messagebox.showinfo('Deleted', f'Id {content_id} is deleted successfully')
+
+    def update_and_show(self, entries):
+        query = 'update student set name=%s,gender=%s, mobile=%s,email=%s,dob=%s, added_date=CURDATE() where id=%s'
+        try:
+            self.my_cursor.execute(query, entries)
+        except Exception as e:
+            print(e)
+            messagebox.showerror(title='Error', message=f'{e}')
+            return False
+        else:
+            self.my_connection.commit()
+            self.get_data()
+            return True
