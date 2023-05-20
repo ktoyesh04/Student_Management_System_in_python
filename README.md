@@ -112,5 +112,5 @@ entries = {'host': 'your_host', 'user': 'your_user', 'password': 'your_password'
 ```
 - Enter your database name at line no.55
 ```python
-cursor.execute('your_database')
+cursor.execute('use your_database')
 ```
